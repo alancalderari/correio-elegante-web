@@ -7,9 +7,12 @@ export default function Home() {
   const [phone, setPhone] = useState('');
   const [message, setMessage] = useState('');
   const [sucesso, setSucesso] = useState('');
+  const [loading, setLoading] = useState(false);
+
 
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
+    setLoading(true);
     const phoneWithoutMask = phone.replace(/\D/g, '');
     const phoneFormatted = `55${phoneWithoutMask}`;
 
@@ -38,6 +41,8 @@ export default function Home() {
     } catch (error) {
       alert('Erro ao enviar a mensagem');
       console.error('Erro:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -80,8 +85,9 @@ export default function Home() {
         <button
           type="submit"
           className="w-full bg-blue-500 text-white py-3 px-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition duration-200"
-        >
-          Enviar
+          disabled={loading}
+          >
+            {loading ? 'Enviando...' : 'Enviar'}
         </button>
       </form>
     </div>
